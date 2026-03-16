@@ -32,6 +32,9 @@ def get_ape_info(ape_id):
     owner = contract.functions.ownerOf(ape_id).call()
     token_uri = contract.functions.tokenURI(ape_id).call()
 
+    if token_uri.startswith("ipfs://"):
+        token_uri = "https://ipfs.io/ipfs/" + token_uri[len("ipfs://"):]
+
     response = requests.get(token_uri)
     response.raise_for_status()
     metadata = response.json()
